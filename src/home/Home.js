@@ -3,6 +3,7 @@ import axios from 'axios';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import moment from 'moment';
+import { useParams, useNavigate } from 'react-router-dom';
 import MyCard from '../components/Card'
 import {API_URL} from '../utilities'
 import Loader from '../components/Loader';
@@ -14,11 +15,14 @@ function Home() {
    const [error, setError] = useState(false)
    const [loading, setLoading] = useState(false)
    const [sort, setSort] = useState("All")
+   const { id } = useParams();
+   const navigate = useNavigate();
+
     useEffect(() => {
         try {
             setLoading(true)
             axios
-            .get(API_URL, { params: { sort } })
+            .get(`${API_URL}api/getDetails/${id}`,  { params: { sort } })
             .then(function (response) {
               setData(response?.data?.transaction)
               setRewards(response?.data?.rewards)
@@ -31,7 +35,7 @@ function Home() {
     },[sort])
 
     const renderCards = data.map((transaction, index) => (
-        <MyCard key={index} transaction={transaction} />
+        <MyCard key={index} data={transaction} type={'details'}/>
     ))
 
     const handleSelect = (key) => {
@@ -57,6 +61,7 @@ function Home() {
     if (loading) return <Loader />
     return (
         <div className='Home'>
+          <div className='goBack'><span onClick={() => navigate(-1)} className='backbutton'> ← Go Back</span></div>
             <div className='Main'>
                 <div className='TotalRewards commoncard'>
                      <h4>Total Rewards</h4>

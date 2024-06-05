@@ -7,4 +7,4 @@ export const calculateRewards = (amount) => {
     return 0; // No points for amounts less than $50
   };
 
-  export const API_URL = 'http://localhost:3001/api/home/'
+  export const API_URL = 'http://localhost:3001/'
